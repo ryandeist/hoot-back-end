@@ -1,4 +1,4 @@
-# Hoot Back-End Setup
+# Hoot Back-End - Setup
 
 ##
 Open your Terminal application and navigate to your `~/code/ga/lectures` directory:

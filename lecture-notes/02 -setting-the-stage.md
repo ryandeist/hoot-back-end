@@ -1,4 +1,4 @@
-# Express API - Hoot Back-End
+# Hoot Back-End - Setting the Stage
 
 ## Overview
 In this module, we’ll build an Express API that serves as the back-end for a full-stack blogging application called **Hoot**.
