@@ -22,12 +22,12 @@ router.get('/', verifyToken, async (req, res) => {
 
 router.get('/:hootId', verifyToken, async (req, res) => {
   try {
-    const hoot = await Hoot.findById(req.params.hootId).populate('author')
-    res.status(200).json(hoot)
+    const hoot = await Hoot.findById(req.params.hootId).populate('author');
+    res.status(200).json(hoot);
   } catch (err) {
-    res.status(500).json({ err: err.message })
+    res.status(500).json({ err: err.message });
   }
-})
+});
 
 router.post('/', verifyToken, async (req, res) => {
   try {
@@ -42,20 +42,30 @@ router.post('/', verifyToken, async (req, res) => {
 
 router.put('/:hootId', verifyToken, async (req, res) => {
   try {
-    const hoot = await Hoot.findById(req.params.hootId)
+    // find the Hoot
+    const hoot = await Hoot.findById(req.params.hootId);
+
+    // check permissions
     if(!hoot.author.equals(req.user._id)) {
       res.status(403).send("You're not allowed to do that!")
     }
+
+    // update Hoot
     const updatedHoot = await Hoot.findByIdAndUpdate(
       req.params.hootId,
       req.body,
-      {new: true}
-    ).populate('author')
-    res.status(200).json(updatedHoot)
+      { new: true }
+    );
+
+    // Append req.user to the author property
+    updatedHoot._doc.author = req.user;
+
+    // Issue JSON response
+    res.status(200).json(updatedHoot);
   } catch (err) {
-    res.status(500).json({ err: err.message })
+    res.status(500).json({ err: err.message });
   }
-})
+});
 
 router.delete('/:hootId', verifyToken, async (req, res) => {
   try {
