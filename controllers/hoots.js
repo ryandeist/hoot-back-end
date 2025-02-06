@@ -30,14 +30,14 @@ router.get('/:hootId', verifyToken, async (req, res) => {
 
 router.post('/', verifyToken, async (req, res) => {
   try {
-    req.body.author = req.user._id
-    const hoot = await (await Hoot.create(req.body)).populate('author')
-    // hoot._doc.author = req.user
-    res.status(201).json(hoot)
+    req.body.author = req.user._id;
+    const hoot = await (await Hoot.create(req.body)).populate('author');
+    hoot._doc.author = req.user;
+    res.status(201).json(hoot);
   } catch (err) {
-    res.status(500).json({ err: err.message })
+    res.status(500).json({ err: err.message });
   }
-})
+});
 
 router.put('/:hootId', verifyToken, async (req, res) => {
   try {
