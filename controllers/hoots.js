@@ -23,7 +23,6 @@ router.get('/', verifyToken, async (req, res) => {
 router.get('/:hootId', verifyToken, async (req, res) => {
   try {
     const hoot = await Hoot.findById(req.params.hootId).populate('author')
-    await hoot.populate({path: 'comments', populate: {path: 'author'}})
     res.status(200).json(hoot)
   } catch (err) {
     res.status(500).json({ err: err.message })
