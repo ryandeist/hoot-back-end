@@ -11,9 +11,10 @@ const router = express.Router();
 
 router.get('/', verifyToken, async (req, res) => {
   try {
-    const hoots = await Hoot.find({})
-    .populate('author')
-    .sort({createdAt: 'desc'});
+    const hoots = await Hoot.find({}) // find all of the Hoots
+    .populate('author') // populate author property with associate username for stored user._id
+    .sort({createdAt: 'desc'}); // sort by newest Hoots first
+
     res.status(200).json(hoots);
   } catch (err) {
     res.status(500).json({ err: err.message });
@@ -22,7 +23,10 @@ router.get('/', verifyToken, async (req, res) => {
 
 router.get('/:hootId', verifyToken, async (req, res) => {
   try {
+    // find Hoot
     const hoot = await Hoot.findById(req.params.hootId).populate('author');
+
+    // issue JSON response
     res.status(200).json(hoot);
   } catch (err) {
     res.status(500).json({ err: err.message });
@@ -31,9 +35,16 @@ router.get('/:hootId', verifyToken, async (req, res) => {
 
 router.post('/', verifyToken, async (req, res) => {
   try {
+    // define author key with req.user._id
     req.body.author = req.user._id;
+
+    // create the Hoot with contents of request body.
     const hoot = await Hoot.create(req.body);
+
+    // update MongoDB doc with referred user
     hoot._doc.author = req.user;
+
+    // issue JSON response
     res.status(201).json(hoot);
   } catch (err) {
     res.status(500).json({ err: err.message });
@@ -69,12 +80,18 @@ router.put('/:hootId', verifyToken, async (req, res) => {
 
 router.delete('/:hootId', verifyToken, async (req, res) => {
   try {
-    const hoot = await Hoot.findById(req.params.hootId)
+    // find the Hoot
+    const hoot = await Hoot.findById(req.params.hootId);
+
+    // check permissions
     if(!hoot.author.equals(req.user._id)) {
-      res.status(403).send("You're not allowed to do that!")
+      res.status(403).send("You're not allowed to do that!");
     }
-    const deletedHoot = await Hoot.findByIdAndDelete(req.params.hootId
-    )
+
+    // delete Hoot
+    const deletedHoot = await Hoot.findByIdAndDelete(req.params.hootId);
+
+    // Issue JSON response
     res.status(200).json(deletedHoot)
   } catch (err) {
     res.status(500).json({ err: err.message })
