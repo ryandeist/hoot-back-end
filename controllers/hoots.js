@@ -134,16 +134,22 @@ router.post('/:hootId/comments', verifyToken, async (req, res) => {
 
 router.put('/:hootId/comments/:commentId', verifyToken, async (req, res) => {
   try {
-    const hoot = await Hoot.findById(req.params.hootId)
-    const comment = hoot.comments.id(req.params.commentId)
+    // get the parent hoot object
+    const hoot = await Hoot.findById(req.params.hootId);
+    //sets comment to the comment in our hoot with the id of our param
+    const comment = hoot.comments.id(req.params.commentId);
+
+    // ensures current user is the author of the comment.
     if (comment.author.toString() !== req.user._id) {
-      res.status(403).json({ err: 'You are not authorized to edit this comment!' })
+      res.status(403).json({ err: 'You are not authorized to edit this comment!' });
     }
-    comment.text = req.body.text
-    await hoot.save()
-    res.status(200).json({ message: 'Comment updated successfully!' })
+
+    // set the comment to the test key of req.body
+    comment.text = req.body.text;
+    await hoot.save();
+    res.status(200).json({ message: 'Comment updated successfully!' });
   } catch (err) {
-    res.status(500).json({ err: err.message })
+    res.status(500).json({ err: err.message });
   }
 })
 
