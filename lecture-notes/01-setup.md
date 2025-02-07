@@ -1,10 +1,10 @@
-# Hoot Back-End - Setup
+# Hoot Back-End Setup
 
 ##
-Open your Terminal application and navigate to your `~/code/ga/lectures` directory:
+Open your Terminal application and navigate to your `~/code` directory:
 
 ```bash
-cd ~/code/ga/lectures
+cd ~/code
 ```
 
 ## Cloning the Auth boilerplate
@@ -13,7 +13,7 @@ This lecture uses the [Express API JWT Auth Template](https://github.com/ryandei
 Navigate to the Express API JWT Auth Template and clone the repository to your machine:
 
 ```bash
-git clone https://git.generalassemb.ly/modular-curriculum-all-courses/express-api-jwt-auth-template.git
+git clone https://github.com/ryandeist/express-api-jwt-auth-template.git
 ```
 
 Once we have the repository on our machines, we can change the name of the directory to `'express-api-hoot-back-end'`:
@@ -84,7 +84,6 @@ Add the following secret keys to your application:
 MONGODB_URI=mongodb+srv://<username>:<password>@sei-w0kys.azure.mongodb.net/hoot?retryWrites=true
 JWT_SECRET=supersecret
 ```
-> If you are unsure of where to obtain your MongoDB URI, please refer to the MongoDB Atlas Setup Lab.
 
 ## Run the application
 If you check the `package.json` of your starter code, you’ll see a script has been added to run the application using the dev dependency `nodemon`.
